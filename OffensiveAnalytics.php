@@ -42,7 +42,7 @@ class OffensiveAnalytics {
 		'uip', 'oup', 'кораб', 'боеп', 'деепр', 'хульс', 'een', 'ee6', 'ein', 'сугуб', 'карб', 'гроб',
 		'лить', 'рсук', 'влюб', 'ляп', 'граб', 'ибог', 'вело', 'ебэ', 'перв', 'eep', 'ying', 'бляшка',
 		'laun', 'чаепитие', 'oub', 'мандарин', 'гондольер', 'гоша', 'фраг', 'гав', 'говор', 'гавор',
-		'помога', 'памага', 'гов', 'огонь', 'o1b2', 'ведро', 'догон', 'хулио', 'хульст', 'хульс' 
+		'помога', 'памага', 'гов', 'огонь', 'o1b2', 'ведро', 'догон', 'хулио', 'хульст', 'хульс', 'углубл'
 	];
 
 	public static function getOffensive(string $text, string $replace = "*") : array{
@@ -95,7 +95,8 @@ class OffensiveAnalytics {
 		{
 		
 		$m[$n]=$mat[$n][1];
-		for($i = 0; $i < count($m[$n]); $i++){
+		$c = count($m[$n]);
+		for($i = 0; $i < $c; $i++){
 			$word = mb_strtolower($m[$n][$i]);
 			foreach(self::EXCEPTIONS as $exception){
 				if(mb_strpos($word, $exception) !== false){
@@ -111,4 +112,4 @@ class OffensiveAnalytics {
 	}
 	return $m;
 }
-}
+} 
