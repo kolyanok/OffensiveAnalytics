@@ -1,0 +1,39 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master, feature/github_workflow ]
+  pull_request:
+    branches: [ master, feature/github_workflow ]
+
+jobs:
+
+  build-test-upload:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build image
+      run: docker build . --file Dockerfile -t offensiveanalytics
+    - name: Build tests
+      run: docker build . --file Dockerfile.tests -t offensiveanalyticstests
+    - name: Run tests
+      run: docker run offensiveanalyticstests
+    - name: Build release
+      run: docker build . --file Dockerfile.app -t kolyanok/offensiveanalyticsapp:v$GITHUB_RUN_NUMBER
+    - name: push to DockerHub
+      run: |
+        echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+        docker push kolyanok/offensiveanalyticsapp:v$GITHUB_RUN_NUMBER
+      
+      
+  cscheck:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Code Style check
+      uses: chindit/actions-phpcs@master
+      with:
+        dir: src

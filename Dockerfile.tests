@@ -1,0 +1,4 @@
+FROM offensiveanalytics
+
+RUN php composer.phar update
+CMD ["sh", "runtests.sh"]
